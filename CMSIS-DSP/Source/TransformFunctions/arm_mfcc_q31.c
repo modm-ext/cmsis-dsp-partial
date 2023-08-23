@@ -40,13 +40,13 @@
 #define MICRO_Q31 0x08637BD0
 #define SHIFT_MELFILTER_SATURATION_Q31 10
 /**
-  @ingroup groupTransforms
+  @ingroup MFCC
  */
 
 
 
 /**
-  @addtogroup MFCC
+  @addtogroup MFCCQ31
   @{
  */
 
@@ -73,7 +73,6 @@
 
  */
 
-
 arm_status arm_mfcc_q31(
   const arm_mfcc_instance_q31 * S,
   q31_t *pSrc,
@@ -97,7 +96,7 @@ arm_status arm_mfcc_q31(
     // q31
     arm_absmax_q31(pSrc,S->fftLen,&m,&index);
 
-    if (m !=0)
+    if ((m != 0) && (m != 0x7FFFFFFF))
     {
        q31_t quotient;
        int16_t shift;
@@ -155,6 +154,7 @@ arm_status arm_mfcc_q31(
         S->filterLengths[i],
         &result);
 
+
       coefsPos += S->filterLengths[i];
 
       // q16.48 - fftShift
@@ -165,6 +165,10 @@ arm_status arm_mfcc_q31(
 
     }
 
+    if ((m != 0) && (m != 0x7FFFFFFF))
+    {
+      arm_scale_q31(pTmp,m,0,pTmp,S->nbMelFilters);
+    }
 
     // q16.29 - fftShift - satShift
     /* Compute the log */
@@ -194,5 +198,5 @@ arm_status arm_mfcc_q31(
 }
 
 /**
-  @} end of MFCC group
+  @} end of MFCCQ31 group
  */

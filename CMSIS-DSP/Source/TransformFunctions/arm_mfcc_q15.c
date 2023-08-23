@@ -40,13 +40,13 @@
 #define MICRO_Q15 0x00000219
 #define SHIFT_MELFILTER_SATURATION_Q15 10
 /**
-  @ingroup groupTransforms
+  @ingroup MFCC
  */
 
 
 
 /**
-  @addtogroup MFCC
+  @addtogroup MFCCQ15
   @{
  */
 
@@ -72,7 +72,6 @@
                    point computations may saturate.
 
  */
-
 arm_status arm_mfcc_q15(
   const arm_mfcc_instance_q15 * S,
   q15_t *pSrc,
@@ -96,7 +95,7 @@ arm_status arm_mfcc_q15(
     // q15
     arm_absmax_q15(pSrc,S->fftLen,&m,&index);
 
-    if (m !=0)
+    if ((m != 0) && (m != 0x7FFF))
     {
        q15_t quotient;
        int16_t shift;
@@ -163,6 +162,10 @@ arm_status arm_mfcc_q15(
 
     }
 
+    if ((m != 0) && (m != 0x7FFF))
+    {
+      arm_scale_q31(pTmp,m<<16,0,pTmp,S->nbMelFilters);
+    }
 
     // q34.29 - fftShift - satShift
     /* Compute the log */
@@ -195,5 +198,5 @@ arm_status arm_mfcc_q15(
 }
 
 /**
-  @} end of MFCC group
+  @} end of MFCCQ15 group
  */

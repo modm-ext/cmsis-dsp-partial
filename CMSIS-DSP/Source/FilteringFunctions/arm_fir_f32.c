@@ -63,6 +63,7 @@
   <pre>
       {x[n-numTaps+1], x[n-numTaps], x[n-numTaps-1], x[n-numTaps-2]....x[n](==pSrc[0]), x[n+1](==pSrc[1]), ..., x[n+blockSize-1](==pSrc[blockSize-1])}
   </pre>
+
   @par
                    Note that the length of the state buffer exceeds the length of the coefficient array by <code>blockSize-1</code>.
                    The increased state buffer length allows circular addressing, which is traditionally used in the FIR filters,
@@ -82,6 +83,7 @@
                    - Zeros out the values in the state buffer.
                    To do this manually without calling the init function, assign the follow subfields of the instance structure:
                    numTaps, pCoeffs, pState. Also set all of the values in pState to zero.
+
   @par
                    Use of the initialization function is optional.
                    However, if the initialization function is used, then the instance structure cannot be placed into a const data section.
@@ -96,6 +98,7 @@
   </pre>
                    where <code>numTaps</code> is the number of filter coefficients in the filter; <code>pState</code> is the address of the state buffer;
                    <code>pCoeffs</code> is the address of the coefficient buffer.
+
   @par          Initialization of Helium version
                  For Helium version the array of coefficients must be padded with zero to contain
                  a full number of lanes.
@@ -113,12 +116,12 @@
                  the implementation may require to read more coefficients due to the vectorization and
                  to avoid having to manage too many different cases in the code.
 
-
   @par          Helium state buffer
                  The state buffer must contain some additional temporary data
                  used during the computation but which is not the state of the FIR.
                  The first A samples are temporary data.
                  The remaining samples are the state of the FIR filter.
+
   @par
                  So the state buffer has size <code> numTaps + A + blockSize - 1 </code> :
                  - A is blockSize for f32
@@ -145,7 +148,6 @@
   @param[in]     pSrc       points to the block of input data
   @param[out]    pDst       points to the block of output data
   @param[in]     blockSize  number of samples to process
-  @return        none
  */
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
@@ -355,8 +357,8 @@ __STATIC_INLINE void arm_fir_f32_5_8_mve(const arm_fir_instance_f32 * S,
 
 
 
-void arm_fir_f32(
-const arm_fir_instance_f32 * S,
+ARM_DSP_ATTRIBUTE void arm_fir_f32(
+ARM_DSP_ATTRIBUTE const arm_fir_instance_f32 * S,
 const float32_t * pSrc,
 float32_t * pDst,
 uint32_t blockSize)
@@ -687,8 +689,8 @@ uint32_t blockSize)
 #else
 #if defined(ARM_MATH_NEON)
 
-void arm_fir_f32(
-const arm_fir_instance_f32 * S,
+ARM_DSP_ATTRIBUTE void arm_fir_f32(
+ARM_DSP_ATTRIBUTE const arm_fir_instance_f32 * S,
 const float32_t * pSrc,
 float32_t * pDst,
 uint32_t blockSize)
@@ -906,7 +908,7 @@ uint32_t blockSize)
 
 }
 #else
-void arm_fir_f32(
+ARM_DSP_ATTRIBUTE void arm_fir_f32(
   const arm_fir_instance_f32 * S,
   const float32_t * pSrc,
         float32_t * pDst,

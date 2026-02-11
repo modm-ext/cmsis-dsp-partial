@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_correlate_f64.c
  * Description:  Correlation of floating-point sequences
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -64,7 +67,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f64(
     uint32_t j, k, count, blkCnt;                  /* Loop counters */
     uint32_t outBlockSize;                         /* Loop counter */
     int32_t inc = 1;                               /* Destination address modifier */
-#if defined(ARM_MATH_NEON) && defined(__aarch64__)
+#if defined(ARM_MATH_NEON) && defined(__aarch64__) && !defined(ARM_MATH_AUTOVECTORIZE)
     float64x2_t sumV,pxV,pyV ;
 #endif
 
@@ -166,7 +169,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f64(
     {
         /* Accumulator is made zero for every iteration */
         sum = 0.;
-#if defined(ARM_MATH_NEON) && defined(__aarch64__)
+#if defined(ARM_MATH_NEON) && defined(__aarch64__) && !defined(ARM_MATH_AUTOVECTORIZE)
         sumV = vdupq_n_f64(0.0);
         k = count >> 1U ;
 
@@ -248,7 +251,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f64(
         {
             /* Accumulator is made zero for every iteration */
             sum = 0.;
-#if defined(ARM_MATH_NEON) && defined(__aarch64__)
+#if defined(ARM_MATH_NEON) && defined(__aarch64__) && !defined(ARM_MATH_AUTOVECTORIZE)
             sumV = vdupq_n_f64(0.0);
             k = srcBLen >> 1U ;
             while(k > 0U)
@@ -304,7 +307,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f64(
         {
             /* Accumulator is made zero for every iteration */
             sum = 0.;
-#if defined(ARM_MATH_NEON) && defined(__aarch64__)
+#if defined(ARM_MATH_NEON) && defined(__aarch64__) && !defined(ARM_MATH_AUTOVECTORIZE)
             sumV = vdupq_n_f64(0.0);
             k = srcBLen >> 1U ;
             while(k > 0U)
@@ -381,7 +384,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f64(
     {
         /* Accumulator is made zero for every iteration */
         sum = 0.;
-#if defined(ARM_MATH_NEON) && defined(__aarch64__)
+#if defined(ARM_MATH_NEON) && defined(__aarch64__) && !defined(ARM_MATH_AUTOVECTORIZE)
         sumV = vdupq_n_f64(0.0);
         k = count >> 1U ;
 

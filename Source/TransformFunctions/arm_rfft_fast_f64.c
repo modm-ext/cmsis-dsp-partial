@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_fast_f64.c
  * Description:  RFFT & RIFFT Double precision Floating point process function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/transform_functions.h"
 
@@ -195,6 +198,9 @@ static void merge_rfft_f64(
   @param[in]     ifftFlag
                    - value = 0: RFFT
                    - value = 1: RIFFT
+
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
 */
 
 ARM_DSP_ATTRIBUTE void arm_rfft_fast_f64(

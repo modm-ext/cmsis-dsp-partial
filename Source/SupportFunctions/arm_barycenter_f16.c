@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_barycenter_f16.c
  * Description:  Barycenter
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/support_functions_f16.h"
 
@@ -212,7 +215,7 @@ ARM_DSP_ATTRIBUTE void arm_barycenter_f16(const float16_t *in, const float16_t *
    const float16_t *pIn,*pW;
    float16_t *pOut;
    uint32_t blkCntVector,blkCntSample;
-   float16_t accum, w;
+   _Float16 accum, w;
 
    blkCntVector = nbVectors;
    blkCntSample = vecDim;

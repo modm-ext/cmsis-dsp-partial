@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_lattice_init_f32.c
  * Description:  Floating-point FIR Lattice filter initialization function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,12 +26,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
 /**
   @ingroup groupFilters
  */
+
+/**
+
+  @deprecated Those functions are no more tested nor maintained and will be
+              removed in a future version.
+*/
 
 /**
   @addtogroup FIR_Lattice

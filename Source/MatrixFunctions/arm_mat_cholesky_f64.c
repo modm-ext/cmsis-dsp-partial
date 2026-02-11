@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_cholesky_f64.c
  * Description:  Floating-point Cholesky decomposition
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/matrix_functions.h"
 #include "dsp/matrix_utils.h"
@@ -56,7 +59,7 @@
    * the function may not overwrite all output elements.
    */
 
-#if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE) && defined(__aarch64__)
+#if defined(ARM_MATH_NEON) && defined(__aarch64__)
 
 ARM_DSP_ATTRIBUTE arm_status arm_mat_cholesky_f64(
     const arm_matrix_instance_f64 * pSrc,

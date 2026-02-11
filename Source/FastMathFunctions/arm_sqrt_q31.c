@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_sqrt_q31.c
  * Description:  Q31 square root function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/fast_math_functions.h"
 #include "arm_common_tables.h"
@@ -91,7 +94,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_sqrt_q31(
     temp = 0x30000000 - temp;
     var1 = ((q63_t) var1 * temp) >> 29;
 
-    /* 3nd iteration */
+    /* 3rd iteration */
     temp = ((q63_t) var1 * var1) >> 28;
     temp = ((q63_t) number * temp) >> 31;
     temp = 0x30000000 - temp;

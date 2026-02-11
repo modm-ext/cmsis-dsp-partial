@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_f32.c
  * Description:  Floating-point FIR filter processing function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -348,7 +351,7 @@ __STATIC_INLINE void arm_fir_f32_5_8_mve(const arm_fir_instance_f32 * S,
     pTempSrc = &pState[blockSize];
     pTempDest = pState;
     blkCnt = numTaps;
-    while (blkCnt > 0)
+    while (blkCnt > 1)
     {
         *pTempDest++ = *pTempSrc++;
         blkCnt--;
@@ -670,6 +673,7 @@ uint32_t blockSize)
     pTempSrc = &pRefStatePtr[blockSize];
     pTempDest = pRefStatePtr;
 
+    numTaps--;
     blkCnt = numTaps >> 2;
     while (blkCnt > 0)
     {

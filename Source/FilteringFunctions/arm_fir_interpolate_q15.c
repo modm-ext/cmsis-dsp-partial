@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_interpolate_q15.c
  * Description:  Q15 FIR interpolation
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -85,7 +88,7 @@ ARM_DSP_ATTRIBUTE void arm_fir_interpolate_q15(
      */
     pStateCurnt = S->pState + ((q15_t) phaseLen - 1);
     /*
-     * Total number of intput samples
+     * Total number of input samples
      */
     blkCnt = blockSize;
     /*
@@ -693,7 +696,7 @@ ARM_DSP_ATTRIBUTE void arm_fir_interpolate_q15(
   /* pStateCur points to the location where the new input data should be written */
   pStateCur = S->pState + (phaseLen - 1U);
 
-  /* Total number of intput samples */
+  /* Total number of input samples */
   blkCnt = blockSize;
 
   /* Loop over the blockSize. */

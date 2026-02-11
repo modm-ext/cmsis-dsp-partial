@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_q31.c
  * Description:  FFT & RIFFT Q31 process function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/transform_functions.h"
 
@@ -32,6 +35,7 @@
  * Internal functions prototypes
  * -------------------------------------------------------------------- */
 
+#if !defined(ARM_MATH_NEON)
 ARM_DSP_ATTRIBUTE void arm_split_rfft_q31(
         q31_t * pSrc,
         uint32_t fftLen,
@@ -47,7 +51,7 @@ ARM_DSP_ATTRIBUTE void arm_split_rifft_q31(
   const q31_t * pBTable,
         q31_t * pDst,
         uint32_t modifier);
-
+#endif
 /**
   @addtogroup RealFFTQ31
   @{
@@ -91,17 +95,56 @@ ARM_DSP_ATTRIBUTE void arm_split_rifft_q31(
 | 4096        | 1.31          | 13.19          | 0                         |
 | 8192        | 1.31          | 14.18          | 0                         |
 
-  @par
-                   If the input buffer is of length N (fftLenReal), the output buffer must have length 2N
-                   since it is containing the conjugate part (except for MVE version where N+2 is enough).
-                   The input buffer is modified by this function.
-  @par
-                   For the RIFFT, the source buffer must have length N+2 since the Nyquist frequency value
-                   is needed but conjugate part is ignored.
-                   It is not using the packing trick of the float version.
+
+  @par Neon implementation
+       A temporary buffer is needed
+
+  @code
+       void arm_rfft_q31(
+  const arm_rfft_instance_q31 * S,
+        const q31_t * pSrc,
+        q31_t * pDst,
+        q31_t *tmp,
+        uint8_t ifftFlag
+        )
+  @endcode
+
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
 
  */
 
+#if defined(ARM_MATH_NEON)
+#include "CMSIS_NE10_types.h"
+#include "CMSIS_NE10_fft.h"
+
+
+ARM_DSP_ATTRIBUTE void arm_rfft_q31(
+  const arm_rfft_instance_q31 * S,
+        const q31_t * pSrc,
+        q31_t * pDst,
+        q31_t *tmp,
+        uint8_t ifftFlag
+        )
+{
+    if (ifftFlag)
+    {
+        arm_ne10_fft_c2r_1d_int32_neon (pDst,
+                                 pSrc,
+                                 S,
+                                 1,
+                                 tmp);
+    }
+    else
+    {
+        arm_ne10_fft_r2c_1d_int32_neon (pDst,
+                                 pSrc,
+                                 S,
+                                 1,
+                                 tmp);
+    }
+}
+#else
 ARM_DSP_ATTRIBUTE void arm_rfft_q31(
   const arm_rfft_instance_q31 * S,
         q31_t * pSrc,
@@ -138,6 +181,7 @@ ARM_DSP_ATTRIBUTE void arm_rfft_q31(
 
 }
 
+#endif
 /**
   @} end of RealFFTQ31 group
  */
@@ -212,7 +256,7 @@ ARM_DSP_ATTRIBUTE void arm_split_rfft_q31(
     pDst[0] = (pSrc[0] + pSrc[1]) >> 1U;
     pDst[1] = 0;
 }
-#else
+#elif !defined(ARM_MATH_NEON)
 ARM_DSP_ATTRIBUTE void arm_split_rfft_q31(
         q31_t * pSrc,
         uint32_t fftLen,
@@ -361,7 +405,7 @@ ARM_DSP_ATTRIBUTE void arm_split_rifft_q31(
         i -= 1;
     }
 }
-#else
+#elif !defined(ARM_MATH_NEON)
 ARM_DSP_ATTRIBUTE void arm_split_rifft_q31(
         q31_t * pSrc,
         uint32_t fftLen,

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_weighted_average_f32.c
  * Description:  Weighted Average
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include <limits.h>
 #include <math.h>
@@ -42,7 +45,7 @@
  *
  *
  * @param[in]    *in           Array of input values.
- * @param[in]    *weigths      Weights
+ * @param[in]    *weights      Weights
  * @param[in]    blockSize     Number of samples in the input array.
  * @return       Weighted average
  *
@@ -52,7 +55,7 @@
 
 #include "arm_helium_utils.h"
 
-ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const float32_t *weigths, uint32_t blockSize)
+ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const float32_t *weights, uint32_t blockSize)
 {
     float32_t       accum1, accum2;
     f32x4_t         accum1V, accum2V;
@@ -62,7 +65,7 @@ ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const f
 
 
     pIn = in;
-    pW = weigths;
+    pW = weights;
 
 
     accum1V = vdupq_n_f32(0.0);
@@ -101,7 +104,7 @@ ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const f
 #if defined(ARM_MATH_NEON)
 
 #include "NEMath.h"
-ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const float32_t *weigths, uint32_t blockSize)
+ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const float32_t *weights, uint32_t blockSize)
 {
 
     float32_t accum1, accum2;
@@ -115,7 +118,7 @@ ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const f
 
 
     pIn = in;
-    pW = weigths;
+    pW = weights;
 
     accum1=0.0f;
     accum2=0.0f;
@@ -155,7 +158,7 @@ ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in,const f
     return(accum1 / accum2);
 }
 #else
-ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in, const float32_t *weigths, uint32_t blockSize)
+ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in, const float32_t *weights, uint32_t blockSize)
 {
 
     float32_t accum1, accum2;
@@ -164,7 +167,7 @@ ARM_DSP_ATTRIBUTE float32_t arm_weighted_average_f32(const float32_t *in, const 
 
 
     pIn = in;
-    pW = weigths;
+    pW = weights;
 
     accum1=0.0f;
     accum2=0.0f;

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_trans_f64.c
  * Description:  Floating-point matrix transpose
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/matrix_functions.h"
 
@@ -35,7 +38,7 @@
 /**
   @defgroup MatrixTrans Matrix Transpose
 
-  Tranposes a matrix.
+  Transposes a matrix.
 
   Transposing an <code>M x N</code> matrix flips it around the center diagonal and results in an <code>N x M</code> matrix.
   \image html MatrixTranspose.gif "Transpose of a 3 x 3 matrix"

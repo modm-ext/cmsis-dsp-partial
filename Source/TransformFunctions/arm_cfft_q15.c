@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cfft_q15.c
  * Description:  Combined Radix Decimation in Q15 Frequency CFFT processing function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/transform_functions.h"
 
@@ -510,22 +513,6 @@ static void arm_cfft_radix4by2_inverse_q15_mve(const arm_cfft_instance_q15 *S, q
     }
 }
 
-/**
-  @addtogroup ComplexFFTQ15
-  @{
- */
-
-/**
-  @brief         Processing function for Q15 complex FFT.
-  @param[in]     S               points to an instance of Q15 CFFT structure
-  @param[in,out] p1              points to the complex data buffer of size <code>2*fftLen</code>. Processing occurs in-place
-  @param[in]     ifftFlag       flag that selects transform direction
-                   - value = 0: forward transform
-                   - value = 1: inverse transform
-  @param[in]     bitReverseFlag flag that enables / disables bit reversal of output
-                   - value = 0: disables bit reversal of output
-                   - value = 1: enables bit reversal of output
- */
 ARM_DSP_ATTRIBUTE void arm_cfft_q15(
   const arm_cfft_instance_q15 * S,
         q15_t * pSrc,
@@ -582,6 +569,8 @@ ARM_DSP_ATTRIBUTE void arm_cfft_q15(
 
 #else
 
+#if !defined(ARM_MATH_NEON)
+
 extern void arm_radix4_butterfly_q15(
         q15_t * pSrc,
         uint32_t fftLen,
@@ -609,7 +598,7 @@ ARM_DSP_ATTRIBUTE void arm_cfft_radix4by2_inverse_q15(
         uint32_t fftLen,
   const q15_t * pCoef);
 
-
+#endif
 
 /**
   @addtogroup ComplexFFTQ15
@@ -619,15 +608,69 @@ ARM_DSP_ATTRIBUTE void arm_cfft_radix4by2_inverse_q15(
 /**
   @brief         Processing function for Q15 complex FFT.
   @param[in]     S               points to an instance of Q15 CFFT structure
-  @param[in,out] p1              points to the complex data buffer of size <code>2*fftLen</code>. Processing occurs in-place
+  @param[in,out] p1              points to the complex data buffer. Processing occurs in-place
   @param[in]     ifftFlag       flag that selects transform direction
                    - value = 0: forward transform
                    - value = 1: inverse transform
   @param[in]     bitReverseFlag flag that enables / disables bit reversal of output
                    - value = 0: disables bit reversal of output
                    - value = 1: enables bit reversal of output
+
+  @par             Input and Output formats for CFFT Q15
+
+| CFFT Size  | Input Format  | Output Format  | Number of bits to upscale |
+| ---------: | ------------: | -------------: | ------------------------: |
+| 16         | 1.15          | 5.11           | 4
+| 64         | 1.15          | 7.9            | 6
+| 256        | 1.15          | 9.7            | 8
+| 1024       | 1.15          | 11.5           | 10
+
+  @par             Input and Output formats for CIFFT Q15
+
+| CIFFT Size  | Input Format  | Output Format  | Number of bits to upscale |
+| ----------: | ------------: | -------------: | ------------------------: |
+| 16          | 1.15          | 5.11           | 0
+| 64          | 1.15          | 7.9            | 0
+| 256         | 1.15          | 9.7            | 0
+| 1024        | 1.15          | 11.5           | 0
+
+  @par Neon version
+                     The neon version has a different API.
+                     The input and output buffers must be
+                     different.
+                     There is a temporary buffer.
+                     The bit reverse flag is not more
+                     available in Neon version.
+
+  @code
+        void arm_cfft_q15(
+  const arm_cfft_instance_q15 * S,
+        const q15_t * src,
+        q15_t * dst,
+        q15_t *buffer,
+        uint8_t ifftFlag)
+  @endcode
+
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
+
  */
 
+#if defined(ARM_MATH_NEON)
+#include "CMSIS_NE10_types.h"
+#include "CMSIS_NE10_fft.h"
+
+ARM_DSP_ATTRIBUTE void arm_cfft_q15(
+  const arm_cfft_instance_q15 * S,
+        const q15_t * src,
+        q15_t * dst,
+        q15_t *buffer,
+        uint8_t ifftFlag)
+{
+   arm_ne10_fft_c2c_1d_int16_neon (dst,src,S,ifftFlag,1,buffer);
+}
+
+#else
 ARM_DSP_ATTRIBUTE void arm_cfft_q15(
   const arm_cfft_instance_q15 * S,
         q15_t * p1,
@@ -681,9 +724,13 @@ ARM_DSP_ATTRIBUTE void arm_cfft_q15(
     arm_bitreversal_16 ((uint16_t*) p1, S->bitRevLength, S->pBitRevTable);
 }
 
+#endif
+
 /**
   @} end of ComplexFFTQ15 group
  */
+
+#if !defined(ARM_MATH_NEON)
 
 ARM_DSP_ATTRIBUTE void arm_cfft_radix4by2_q15(
         q15_t * pSrc,
@@ -881,5 +928,5 @@ ARM_DSP_ATTRIBUTE void arm_cfft_radix4by2_inverse_q15(
      pSrc[4 * i + 3] = p3;
   }
 }
-
+#endif /* defined NEON */
 #endif /* defined(ARM_MATH_MVEI) */

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_biquad_cascade_df1_q15.c
  * Description:  Processing function for the Q15 Biquad cascade DirectFormI(DF1) filter
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -102,9 +105,9 @@ ARM_DSP_ATTRIBUTE void arm_biquad_cascade_df1_q15(
         bCoeffs1[6] = a1;
 
         bCoeffs2 =
-            vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs0, 3), (q31x4_t) bCoeffs2, 3);
+            (q15x8_t)vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs0, 3), (q31x4_t) bCoeffs2, 3);
         bCoeffs3 =
-            vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs1, 3), (q31x4_t) bCoeffs3, 3);
+            (q15x8_t)vsetq_lane_s32(vgetq_lane_s32((q31x4_t) bCoeffs1, 3), (q31x4_t) bCoeffs3, 3);
 
 
         /* 2 first elements are garbage, will be updated with history */

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_absmin_no_idx_q7.c
  * Description:  Minimum value of absolute values of a Q7 vector
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/statistics_functions.h"
 
@@ -59,8 +62,8 @@ ARM_DSP_ATTRIBUTE void arm_absmin_no_idx_q7(
     int32_t  blkCnt;           /* loop counters */
     q7x16_t        vecSrc;
     q7_t   const *pSrcVec;
-    uint8x16_t     curExtremValVec = vdupq_n_s8(Q7_ABSMAX);
-    q7_t            minValue = Q7_ABSMAX;
+    uint8x16_t     curExtremValVec = vdupq_n_u8(Q7_ABSMAX);
+    uint8_t            minValue = Q7_ABSMAX;
     mve_pred16_t    p0;
 
 
@@ -98,8 +101,8 @@ ARM_DSP_ATTRIBUTE void arm_absmin_no_idx_q7(
     /*
      * Get min value across the vector
      */
-    minValue = vminavq(minValue, (q7x16_t)curExtremValVec);
-    *pResult = minValue;
+    minValue = vminvq(minValue, curExtremValVec);
+    *pResult = __USAT(minValue,7);
 }
 
 #else
@@ -113,7 +116,7 @@ ARM_DSP_ATTRIBUTE void arm_absmin_no_idx_q7(
         uint32_t blkCnt;                     /* Loop counter */                                   \
                                                                                                             \
                                                                                            \
-  /* Load first input value that act as reference value for comparision */                                  \
+  /* Load first input value that act as reference value for comparison */                                  \
   out = *pSrc++;                                                                                            \
   out = (out > 0) ? out : (q7_t)__QSUB8(0, out);                                                                           \
                                                                                                             \
@@ -188,7 +191,7 @@ ARM_DSP_ATTRIBUTE void arm_absmin_no_idx_q7(
         uint32_t blkCnt;                     /* Loop counter */
 
 
-  /* Load first input value that act as reference value for comparision */
+  /* Load first input value that act as reference value for comparison */
   out = (*pSrc > 0) ? *pSrc : ((*pSrc == (q7_t) 0x80) ? (q7_t) 0x7f : -*pSrc);
   pSrc++;
 

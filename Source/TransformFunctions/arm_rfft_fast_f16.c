@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_fast_f16.c
  * Description:  RFFT & RIFFT Floating point process function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/transform_functions_f16.h"
 #include "arm_common_tables_f16.h"
@@ -312,6 +315,12 @@ static void merge_rfft_f16(
    }
 
 }
+#elif defined(ARM_MATH_NEON_FLOAT16)
+/*
+
+No stage merge functions defined here for Neon.
+
+*/
 #else
 static void stage_rfft_f16(
   const arm_rfft_fast_instance_f16 * S,
@@ -484,8 +493,34 @@ static void merge_rfft_f16(
   @param[in]     ifftFlag
                    - value = 0: RFFT
                    - value = 1: RIFFT
-*/
 
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
+*/
+#if defined(ARM_MATH_NEON_FLOAT16)
+
+#include "CMSIS_NE10_types.h"
+#include "CMSIS_NE10_fft.h"
+
+ARM_DSP_ATTRIBUTE void arm_rfft_fast_f16(
+  const arm_rfft_fast_instance_f16 * S,
+  const float16_t * p,
+  float16_t * pOut,
+  float16_t *tmpbuf,
+  uint8_t ifftFlag)
+{
+/* Calculation of Real FFT */
+   if (!ifftFlag)
+   {
+     arm_ne10_fft_r2c_1d_float16_neon (S,p,pOut,tmpbuf);
+   }
+   else
+   {
+     arm_ne10_fft_c2r_1d_float16_neon (S,p,pOut,tmpbuf);
+   }
+}
+
+#else
 ARM_DSP_ATTRIBUTE void arm_rfft_fast_f16(
   const arm_rfft_fast_instance_f16 * S,
   float16_t * p,
@@ -513,7 +548,7 @@ ARM_DSP_ATTRIBUTE void arm_rfft_fast_f16(
       stage_rfft_f16(S, p, pOut);
    }
 }
-
+#endif
 /**
 * @} end of RealFFTF16 group
 */

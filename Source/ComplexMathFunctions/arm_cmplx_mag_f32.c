@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cmplx_mag_f32.c
  * Description:  Floating-point complex magnitude
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/complex_math_functions.h"
 
@@ -68,7 +71,7 @@
   @param[in]     numSamples  number of samples in each vector
  */
 
-#if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
+#if defined(ARM_MATH_NEON)
 #include "arm_vec_math.h"
 #endif
 
@@ -160,7 +163,7 @@ ARM_DSP_ATTRIBUTE void arm_cmplx_mag_f32(
   uint32_t blkCnt;                               /* loop counter */
   float32_t real, imag;                      /* Temporary variables to hold input values */
 
-#if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
+#if defined(ARM_MATH_NEON)
 
   float32x4x2_t vecA;
   float32x4_t vRealA;

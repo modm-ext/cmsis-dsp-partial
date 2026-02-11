@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_mult_opt_q31.c
  * Description:  Q31 matrix multiplication
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/matrix_functions.h"
 
@@ -412,7 +415,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mat_mult_opt_q31(
         while (row > 0u) {
             /*
              * For every row wise process, the column loop counter is to be initiated
-             * Compute 2 columns and 2 rows in parrallel
+             * Compute 2 columns and 2 rows in parallel
              */
             col = numColsB >> 1;
             j = 0;

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_add_f16.c
  * Description:  Floating-point vector addition
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/basic_math_functions_f16.h"
 
@@ -72,7 +75,7 @@ ARM_DSP_ATTRIBUTE void arm_add_f16(
         /* Add and then store the results in the destination buffer. */
         vec1 = vld1q(pSrcA);
         vec2 = vld1q(pSrcB);
-        res = vaddq(vec1, vec2);
+        res = vaddq_f16(vec1, vec2);
         vst1q(pDst, res);
 
         /* Increment pointers */
@@ -93,7 +96,7 @@ ARM_DSP_ATTRIBUTE void arm_add_f16(
       mve_pred16_t p0 = vctp16q(blkCnt);
       vec1 = vld1q(pSrcA);
       vec2 = vld1q(pSrcB);
-      vstrhq_p(pDst, vaddq(vec1,vec2), p0);
+      vstrhq_p_f16(pDst, vaddq_f16(vec1,vec2), p0);
     }
 
 }

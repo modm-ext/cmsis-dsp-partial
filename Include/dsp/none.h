@@ -1,6 +1,6 @@
 /******************************************************************************
  * @file     none.h
- * @brief    Intrinsincs when no DSP extension available
+ * @brief    Intrinsics when no DSP extension available
  * @version  V1.9.0
  * @date     20. July 2020
  ******************************************************************************/
@@ -72,7 +72,7 @@ compiler file in Core or Core_A would not make sense.
         count += 1U;
         mask = mask >> 1U;
       }
-      return count;
+      return ((uint8_t)count);
     }
 
   __STATIC_FORCEINLINE int32_t __SSAT(int32_t val, uint32_t sat)

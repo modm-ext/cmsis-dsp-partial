@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_correlate_f32.c
  * Description:  Correlation of floating-point sequences
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -314,7 +317,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
         float32_t * pDst)
 {
 
-#if defined(ARM_MATH_DSP) && !defined(ARM_MATH_AUTOVECTORIZE)
+#if defined(ARM_MATH_DSP) || defined(ARM_MATH_NEON)
 
   const float32_t *pIn1;                               /* InputA pointer */
   const float32_t *pIn2;                               /* InputB pointer */
@@ -459,7 +462,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
     }
 
     accum = vpadd_f32(vget_low_f32(res), vget_high_f32(res));
-    sum += accum[0] + accum[1];
+    sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
     k = count & 0x3;
 #else
@@ -585,19 +588,19 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
         py += 4;
 
         x = x1v;
-        res = vmlaq_n_f32(res,x,c[0]);
+        res = vmlaq_n_f32(res,x,vgetq_lane_f32(c,0));
 
         x = vextq_f32(x1v,x2v,1);
 
-        res = vmlaq_n_f32(res,x,c[1]);
+        res = vmlaq_n_f32(res,x,vgetq_lane_f32(c,1));
 
         x = vextq_f32(x1v,x2v,2);
 
-	res = vmlaq_n_f32(res,x,c[2]);
+	res = vmlaq_n_f32(res,x,vgetq_lane_f32(c,2));
 
         x = vextq_f32(x1v,x2v,3);
 
-	res = vmlaq_n_f32(res,x,c[3]);
+	res = vmlaq_n_f32(res,x,vgetq_lane_f32(c,3));
 
         x1v = x2v;
         px+=4;
@@ -615,11 +618,10 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
         res = vmlaq_n_f32(res,x1v,c0);
 
         /* Reuse the present samples for the next MAC */
-        x1v[0] = x1v[1];
-        x1v[1] = x1v[2];
-        x1v[2] = x1v[3];
-
-        x1v[3] = *(px++);
+        x1v = vsetq_lane_f32(vgetq_lane_f32(x1v,1),x1v,0);
+        x1v = vsetq_lane_f32(vgetq_lane_f32(x1v,2),x1v,1);
+        x1v = vsetq_lane_f32(vgetq_lane_f32(x1v,3),x1v,2);
+        x1v = vsetq_lane_f32(*(px++),x1v,3);
 
         /* Decrement the loop counter */
         k--;
@@ -627,10 +629,10 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
 
       px-=1;
 
-      acc0 = res[0];
-      acc1 = res[1];
-      acc2 = res[2];
-      acc3 = res[3];
+      acc0 = vgetq_lane_f32(res,0);
+      acc1 = vgetq_lane_f32(res,1);
+      acc2 = vgetq_lane_f32(res,2);
+      acc3 = vgetq_lane_f32(res,3);
 #else
       /* read x[0], x[1], x[2] samples */
       x0 = *px++;
@@ -802,7 +804,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
     }
 
     accum = vpadd_f32(vget_low_f32(res), vget_high_f32(res));
-    sum += accum[0] + accum[1];
+    sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 #else
       /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
        ** a second loop below computes MACs for the remaining 1 to 3 samples. */
@@ -951,7 +953,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
     }
 
     accum = vpadd_f32(vget_low_f32(res), vget_high_f32(res));
-    sum += accum[0] + accum[1];
+    sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 #else
     /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
      ** a second loop below computes MACs for the remaining 1 to 3 samples. */
@@ -1025,7 +1027,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
   /* So srcBLen is always considered as shorter or equal to srcALen */
   /* But CORR(x, y) is reverse of CORR(y, x) */
   /* So, when srcBLen > srcALen, output pointer is made to point to the end of the output buffer */
-  /* and a varaible, inv is set to 1 */
+  /* and a variable, inv is set to 1 */
   /* If lengths are not equal then zero pad has to be done to  make the two
    * inputs of same length. But to improve the performance, we assume zeroes
    * in the output instead of zero padding either of the the inputs*/
@@ -1033,7 +1035,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f32(
    * starting of the output buffer */
   /* If srcALen < srcBLen, (srcALen - srcBLen) zeroes has to included in the
    * ending of the output buffer */
-  /* Once the zero padding is done the remaining of the output is calcualted
+  /* Once the zero padding is done the remaining of the output is calculated
    * using convolution but with the shorter signal time shifted. */
 
   /* Calculate the length of the remaining sequence */

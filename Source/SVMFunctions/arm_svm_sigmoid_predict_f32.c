@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_svm_sigmoid_predict_f32.c
  * Description:  SVM Sigmoid Classifier
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/svm_functions.h"
 #include <limits.h>
@@ -71,7 +74,7 @@ ARM_DSP_ATTRIBUTE void arm_svm_sigmoid_predict_f32(
     row = numRows;
 
     /*
-     * compute 4 rows in parrallel
+     * compute 4 rows in parallel
      */
     while (row >= 4) {
         const float32_t *pInA2, *pInA3;
@@ -166,7 +169,7 @@ ARM_DSP_ATTRIBUTE void arm_svm_sigmoid_predict_f32(
     }
 
     /*
-     * compute 2 rows in parrallel
+     * compute 2 rows in parallel
      */
     if (row >= 2) {
         float32_t const *pSrcA0Vec, *pSrcA1Vec, *pInVec;
@@ -308,7 +311,7 @@ ARM_DSP_ATTRIBUTE void arm_svm_sigmoid_predict_f32(
     float32_t sum = S->intercept;
 
     float32_t dot;
-    float32x4_t dotV;
+    float32x4_t dotV=vdupq_n_f32(0.0f);
 
     float32x4_t accuma,accumb,accumc,accumd,accum;
     float32x2_t accum2;

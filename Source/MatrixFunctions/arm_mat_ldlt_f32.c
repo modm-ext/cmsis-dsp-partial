@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_ldl_f32.c
  * Description:  Floating-point LDL decomposition
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/matrix_functions.h"
 #include "dsp/matrix_utils.h"
@@ -147,7 +150,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mat_ldlt_f32(
 
         int32x4_t vecOffs;
         int w;
-        vecOffs = vidupq_u32((uint32_t)0, 1);
+        vecOffs = (int32x4_t)vidupq_u32((uint32_t)0, 1);
         vecOffs = vmulq_n_s32(vecOffs,n);
 
         for(w=k+1; w<n; w+=4)

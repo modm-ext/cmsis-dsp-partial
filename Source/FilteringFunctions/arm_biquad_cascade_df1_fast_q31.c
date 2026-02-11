@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_biquad_cascade_df1_fast_q31.c
  * Description:  Processing function for the Q31 Fast Biquad cascade DirectFormI(DF1) filter
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -50,7 +53,7 @@
                    These intermediate results are added to a 2.30 accumulator.
                    Finally, the accumulator is saturated and converted to a 1.31 result.
                    The fast version has the same overflow behavior as the standard version and provides less precision since it discards the low 32 bits of each multiplication result.
-                   In order to avoid overflows completely the input signal must be scaled down by two bits and lie in the range [-0.25 +0.25). Use the intialization function
+                   In order to avoid overflows completely the input signal must be scaled down by two bits and lie in the range [-0.25 +0.25). Use the initialization function
                    arm_biquad_cascade_df1_init_q31() to initialize filter structure.
   @remark
                    Refer to \ref arm_biquad_cascade_df1_q31() for a slower implementation of this function

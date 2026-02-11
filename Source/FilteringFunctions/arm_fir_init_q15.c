@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_init_q15.c
  * Description:  Q15 FIR filter initialization function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -72,7 +75,7 @@
       {0.3, -0.3, 0, 0}.
   </pre>
                    <code>pState</code> points to the array of state variables.
-                   <code>pState</code> is of length <code>numTaps+blockSize</code>, when running on Cortex-M4 and Cortex-M3  and is of length <code>numTaps+blockSize-1</code>, when running on Cortex-M0 where <code>blockSize</code> is the number of input samples processed by each call to <code>arm_fir_q15()</code>.
+                   <code>pState</code> is of length <code>numTaps+blockSize</code>, when ARM_MATH_DSP is defined. Otherwise, it is of length <code>numTaps+blockSize-1</code> where <code>blockSize</code> is the number of input samples processed by each call to <code>arm_fir_q15()</code>.
 
   @par          Initialization of Helium version
                    For Helium version the array of coefficients must be a multiple of 8 (8a) even if less

@@ -27,6 +27,7 @@
  * limitations under the License.
  */
 
+#include "arm_compiler_specific.h"
 #include "dsp/distance_functions.h"
 #include <limits.h>
 #include <math.h>
@@ -61,7 +62,7 @@ ARM_DSP_ATTRIBUTE float32_t arm_hamming_distance(const uint32_t *pA, const uint3
 
     arm_boolean_distance_TF_FT(pA, pB, numberOfBools, &ctf, &cft);
 
-    return(1.0*(ctf + cft) / numberOfBools);
+    return(1.0f*(ctf + cft) / numberOfBools);
 }
 
 

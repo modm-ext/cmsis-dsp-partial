@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_max_no_idx_q7.c
  * Description:  Maximum value of a q7 vector without returning the index
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/statistics_functions.h"
 
@@ -110,7 +113,7 @@ ARM_DSP_ATTRIBUTE void arm_max_no_idx_q7(
   q7_t maxVal1, out;       /* Temporary variables to store the output value. */
   uint32_t blkCnt;              /* loop counter */
 
-  /* Load first input value that act as reference value for comparision */
+  /* Load first input value that act as reference value for comparison */
   out = *pSrc++;
 
   blkCnt = (blockSize - 1U);

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_correlate_f16.c
  * Description:  Correlation of floating-point sequences
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions_f16.h"
 
@@ -1034,7 +1037,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f16(
   /* So srcBLen is always considered as shorter or equal to srcALen */
   /* But CORR(x, y) is reverse of CORR(y, x) */
   /* So, when srcBLen > srcALen, output pointer is made to point to the end of the output buffer */
-  /* and a varaible, inv is set to 1 */
+  /* and a variable, inv is set to 1 */
   /* If lengths are not equal then zero pad has to be done to  make the two
    * inputs of same length. But to improve the performance, we assume zeroes
    * in the output instead of zero padding either of the the inputs*/
@@ -1042,7 +1045,7 @@ ARM_DSP_ATTRIBUTE void arm_correlate_f16(
    * starting of the output buffer */
   /* If srcALen < srcBLen, (srcALen - srcBLen) zeroes has to included in the
    * ending of the output buffer */
-  /* Once the zero padding is done the remaining of the output is calcualted
+  /* Once the zero padding is done the remaining of the output is calculated
    * using convolution but with the shorter signal time shifted. */
 
   /* Calculate the length of the remaining sequence */

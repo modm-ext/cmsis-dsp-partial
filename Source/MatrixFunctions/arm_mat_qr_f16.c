@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_qr_f16.c
  * Description:  Half floating-point matrix QR decomposition.
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2022 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/matrix_functions_f16.h"
 #include "dsp/matrix_utils.h"
@@ -603,7 +606,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mat_qr_f16(
       k=1;
       while(blkCnt > 0)
       {
-          float16_t sum;
+          _Float16 sum;
 
           for(j=0;j<pSrc->numCols-col; j++)
           {
@@ -629,9 +632,12 @@ ARM_DSP_ATTRIBUTE arm_status arm_mat_qr_f16(
       pa = pa0;
       for(;k<pSrc->numRows-col; k++)
       {
+          _Float16 sum;
           for(j=0;j<pSrc->numCols-col; j++)
           {
-              *pdst++ += (_Float16)*pv * (_Float16)*pa++;
+              sum = *pdst;
+              sum += (_Float16)*pv * (_Float16)*pa++;
+              *pdst++ = sum ;
           }
           pa += col;
           pv++;
@@ -713,7 +719,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mat_qr_f16(
        k=1;
        while(blkCnt > 0)
        {
-           float16_t sum;
+           _Float16 sum;
 
            for(j=0;j<pOutQ->numRows-pos; j++)
            {
@@ -739,9 +745,12 @@ ARM_DSP_ATTRIBUTE arm_status arm_mat_qr_f16(
        pa = pa0;
        for(;k<pOutQ->numRows-pos; k++)
        {
+           _Float16 sum;
            for(j=0;j<pOutQ->numRows-pos; j++)
            {
-               *pdst++ += (_Float16)*pv * (_Float16)*pa++;
+               sum = *pdst;
+               sum += (_Float16)*pv * (_Float16)*pa++;
+               *pdst++ = sum ;
            }
            pa += pos;
            pv++;

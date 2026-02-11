@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mfcc_init_q15.c
  * Description:  MFCC initialization function for the q15 version
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
+
+#if defined(ARM_MATH_NEON)
+#define RFFT_INIT(L) \
+  status=arm_rfft_init_q15(&(S->rfft),L);
+#define RFFT_INIT_WITH_LEN(L) \
+  status=arm_rfft_init_##L##_q15(&(S->rfft));
+#else
+#define RFFT_INIT(L) \
+  status=arm_rfft_init_q15(&(S->rfft),L,0,1);
+#define RFFT_INIT_WITH_LEN(L) \
+  status=arm_rfft_init_##L##_q15(&(S->rfft),0,1);
+#endif
+
+
 
 /**
  * @defgroup MFCCQ15 MFCC Q15
@@ -109,16 +126,16 @@ ARM_DSP_ATTRIBUTE arm_status arm_mfcc_init_q15(
  S->filterCoefs=filterCoefs;
  S->windowCoefs=windowCoefs;
 
- #if defined(ARM_MFCC_CFFT_BASED)
+ #if defined(ARM_MFCC_USE_CFFT)
  status=arm_cfft_init_q15(&(S->cfft),fftLen);
  #else
- status=arm_rfft_init_q15(&(S->rfft),fftLen,0,1);
+ RFFT_INIT(fftLen);
  #endif
 
  return(status);
 }
 
-#if defined(ARM_MFCC_CFFT_BASED)
+#if defined(ARM_MFCC_USE_CFFT)
 #define MFCC_INIT_Q15(LEN)                    \
 ARM_DSP_ATTRIBUTE arm_status arm_mfcc_init_##LEN##_q15(         \
   arm_mfcc_instance_q15 * S,                  \
@@ -170,7 +187,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mfcc_init_##LEN##_q15(             \
  S->filterCoefs=filterCoefs;                      \
  S->windowCoefs=windowCoefs;                      \
                                                   \
- status=arm_rfft_init_##LEN##_q15(&(S->rfft),0,1);\
+ RFFT_INIT_WITH_LEN(LEN);                         \
                                                   \
  return(status);                                  \
 }
@@ -408,6 +425,8 @@ MFCC_INIT_Q15(2048)
  */
 MFCC_INIT_Q15(4096)
 
+#undef RFFT_INIT
+#undef RFFT_INIT_WITH_LEN
 /**
   @} end of MFCCQ15 group
  */

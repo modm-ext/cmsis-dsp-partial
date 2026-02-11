@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_rfft_fast_f32.c
  * Description:  RFFT & RIFFT Floating point process function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/transform_functions.h"
 
@@ -306,6 +309,12 @@ static void merge_rfft_f32(
    }
 
 }
+#elif defined(ARM_MATH_NEON)
+/*
+
+No stage merge functions defined here for Neon.
+
+*/
 #else
 static void stage_rfft_f32(
   const arm_rfft_fast_instance_f32 * S,
@@ -492,8 +501,7 @@ static void merge_rfft_f32(
                    and we describe each algorithm in turn.
   @par           Floating-point
                    The main functions are \ref arm_rfft_fast_f32() and \ref arm_rfft_fast_init_f32().
-                   The older functions \ref arm_rfft_f32() and \ref arm_rfft_init_f32() have been deprecated
-                   but are still documented.
+
                    For f16, the functions are \ref arm_rfft_fast_f16() and \ref arm_rfft_fast_init_f16().
                    For f64, the functions are \ref arm_rfft_fast_f64() and \ref arm_rfft_fast_init_f64().
   @par
@@ -569,6 +577,28 @@ static void merge_rfft_f32(
 @par
                    Note that with MVE versions you can't initialize instance structures directly and **must
                    use the initialization function**.
+
+ @par Neon version
+                     The neon version has a different API.
+                     The input and output buffers must be
+                     different.
+                     There is a temporary buffer that is not optional.
+
+                     The bit reverse flag is not more
+                     available in Neon version.
+
+
+  @code
+        void arm_rfft_fast_f32(
+                const arm_rfft_fast_instance_f32 * S,
+                float32_t * p,
+                float32_t * pOut,
+                float32_t *tmpbuf,
+                uint8_t ifftFlag);
+  @endcode
+
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
  */
 
 /**
@@ -591,8 +621,60 @@ static void merge_rfft_f32(
   @param[in]     ifftFlag
                    - value = 0: RFFT
                    - value = 1: RIFFT
+
+  @par Neon version
+                     The neon version has a different API.
+                     The input and output buffers must be
+                     different.
+                     There is a temporary buffer.
+  @par
+                     The bit reverse flag is not more
+                     available in Neon version.
+
+  @par
+   @code
+        void arm_rfft_fast_f32(
+                const arm_rfft_fast_instance_f32 * S,
+                const float32_t * p,
+                float32_t * pOut,
+                float32_t *tmpbuf,
+                uint8_t ifftFlag);
+  @endcode
+
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
 */
 
+#if defined(ARM_MATH_NEON)
+
+#include "CMSIS_NE10_types.h"
+#include "CMSIS_NE10_fft.h"
+
+/*
+
+p size      : nfft   reals
+pOut size   : nfft   reals (nfft/2 complex)
+tmpBuf size : 2*nfft reals (nfft   complex)
+
+*/
+ARM_DSP_ATTRIBUTE void arm_rfft_fast_f32(
+  const arm_rfft_fast_instance_f32 * S,
+  const float32_t * p,
+  float32_t * pOut,
+  float32_t *tmpbuf,
+  uint8_t ifftFlag)
+{
+/* Calculation of Real FFT */
+   if (!ifftFlag)
+   {
+     arm_ne10_fft_r2c_1d_float32_neon (S,p,pOut,tmpbuf);
+   }
+   else
+   {
+     arm_ne10_fft_c2r_1d_float32_neon (S,p,pOut,tmpbuf);
+   }
+}
+#else
 ARM_DSP_ATTRIBUTE void arm_rfft_fast_f32(
   const arm_rfft_fast_instance_f32 * S,
   float32_t * p,
@@ -618,7 +700,7 @@ ARM_DSP_ATTRIBUTE void arm_rfft_fast_f32(
       stage_rfft_f32(S, p, pOut);
    }
 }
-
+#endif
 /**
-* @} end of RRealFFTF16ealFFT group
+* @} end of RealFFTF32 group
 */

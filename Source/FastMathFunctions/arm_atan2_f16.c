@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_atan2_f16.c
  * Description:  float16 Arc tangent of y/x
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2022 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/fast_math_functions_f16.h"
 
@@ -67,7 +70,7 @@ __STATIC_FORCEINLINE float16_t arm_atan_limited_f16(float16_t x)
 __STATIC_FORCEINLINE float16_t arm_atan_f16(float16_t x)
 {
    int sign=0;
-   float16_t res=0.0f16;
+   _Float16 res=0.0f16;
 
    if ((_Float16)x < 0.0f16)
    {
@@ -91,7 +94,7 @@ __STATIC_FORCEINLINE float16_t arm_atan_f16(float16_t x)
      res = -(_Float16)res;
    }
 
-   return(res);
+   return((float16_t)res);
 }
 
 /**

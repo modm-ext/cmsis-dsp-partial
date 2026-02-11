@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_weighted_average_f16.c
  * Description:  Weighted average
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include <limits.h>
 #include <math.h>
@@ -55,7 +58,7 @@
  *
  *
  * @param[in]    *in           Array of input values.
- * @param[in]    *weigths      Weights
+ * @param[in]    *weights      Weights
  * @param[in]    blockSize     Number of samples in the input array.
  *
  * @return       Weighted average
@@ -66,7 +69,7 @@
 
 #include "arm_helium_utils.h"
 
-ARM_DSP_ATTRIBUTE float16_t arm_weighted_average_f16(const float16_t *in,const float16_t *weigths, uint32_t blockSize)
+ARM_DSP_ATTRIBUTE float16_t arm_weighted_average_f16(const float16_t *in,const float16_t *weights, uint32_t blockSize)
 {
     _Float16       accum1, accum2;
     float16x8_t    accum1V, accum2V;
@@ -76,7 +79,7 @@ ARM_DSP_ATTRIBUTE float16_t arm_weighted_average_f16(const float16_t *in,const f
 
 
     pIn = in;
-    pW = weigths;
+    pW = weights;
 
 
     accum1V = vdupq_n_f16(0.0f16);
@@ -113,7 +116,7 @@ ARM_DSP_ATTRIBUTE float16_t arm_weighted_average_f16(const float16_t *in,const f
 
 #else
 
-ARM_DSP_ATTRIBUTE float16_t arm_weighted_average_f16(const float16_t *in, const float16_t *weigths, uint32_t blockSize)
+ARM_DSP_ATTRIBUTE float16_t arm_weighted_average_f16(const float16_t *in, const float16_t *weights, uint32_t blockSize)
 {
 
     _Float16 accum1, accum2;
@@ -122,7 +125,7 @@ ARM_DSP_ATTRIBUTE float16_t arm_weighted_average_f16(const float16_t *in, const 
 
 
     pIn = in;
-    pW = weigths;
+    pW = weights;
 
     accum1=0.0f16;
     accum2=0.0f16;

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cfft_radix4_init_f32.c
  * Description:  Radix-4 Decimation in Frequency Floating-point CFFT & CIFFT Initialization function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/transform_functions.h"
 #include "arm_common_tables.h"
@@ -37,7 +40,7 @@
 
 /**
   @brief         Initialization function for the floating-point CFFT/CIFFT.
-  @deprecated    Do not use this function. It has been superceded by \ref arm_cfft_f32 and will be removed in the future.
+  @deprecated    Do not use this function. It has been superseded by \ref arm_cfft_f32 and will be removed in the future.
   @param[in,out] S              points to an instance of the floating-point CFFT/CIFFT structure
   @param[in]     fftLen         length of the FFT
   @param[in]     ifftFlag       flag that selects transform direction

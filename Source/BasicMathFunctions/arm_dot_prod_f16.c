@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_dot_prod_f16.c
  * Description:  Floating-point dot product
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/basic_math_functions_f16.h"
 
@@ -78,7 +81,7 @@ ARM_DSP_ATTRIBUTE void arm_dot_prod_f16(
         vecB = vld1q(pSrcB);
         pSrcB += 8;
 
-        vecSum = vfmaq(vecSum, vecA, vecB);
+        vecSum = vfmaq_f16(vecSum, vecA, vecB);
         /*
          * Decrement the blockSize loop counter
          */
@@ -94,7 +97,7 @@ ARM_DSP_ATTRIBUTE void arm_dot_prod_f16(
         mve_pred16_t p0 = vctp16q(blkCnt);
         vecA = vld1q(pSrcA);
         vecB = vld1q(pSrcB);
-        vecSum = vfmaq_m(vecSum, vecA, vecB, p0);
+        vecSum = vfmaq_m_f16(vecSum, vecA, vecB, p0);
     }
 
     sum = vecAddAcrossF16Mve(vecSum);

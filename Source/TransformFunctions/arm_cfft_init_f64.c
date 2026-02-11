@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_cfft_init_f64.c
  * Description:  Initialization function for cfft f64 instance
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #define FFTINIT(EXT,SIZE)                                           \
   S->bitRevLength = arm_cfft_sR_##EXT##_len##SIZE.bitRevLength;        \
@@ -79,7 +82,7 @@ arm_status arm_cfft_init_##LEN##_f64(arm_cfft_instance_f64 * S)\
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -92,7 +95,7 @@ CFFTINIT_F64(4096)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -106,7 +109,7 @@ CFFTINIT_F64(2048)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -119,7 +122,7 @@ CFFTINIT_F64(1024)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -132,7 +135,7 @@ CFFTINIT_F64(512)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -145,7 +148,7 @@ CFFTINIT_F64(256)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -158,7 +161,7 @@ CFFTINIT_F64(128)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -171,7 +174,7 @@ CFFTINIT_F64(64)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -184,7 +187,7 @@ CFFTINIT_F64(32)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
  */
@@ -198,7 +201,7 @@ CFFTINIT_F64(16)
                    - \ref ARM_MATH_SUCCESS        : Operation successful
                    - \ref ARM_MATH_ARGUMENT_ERROR : an error is detected
 
-  @par          Use of this function is mandatory only for the MVE version of the FFT.
+  @par          Use of this function is mandatory only for the Helium and Neon versions of the FFT.
                 Other versions can still initialize directly the data structure using
                 variables declared in arm_const_structs.h
 

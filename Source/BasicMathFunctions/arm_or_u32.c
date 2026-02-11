@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_or_u32.c
  * Description:  uint32_t bitwise inclusive OR
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/basic_math_functions.h"
 
@@ -85,7 +88,7 @@ ARM_DSP_ATTRIBUTE void arm_or_u32(
         vstrwq_p(pDst, vorrq_u32(vecSrcA, vecSrcB), p0);
     }
 #else
-#if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
+#if defined(ARM_MATH_NEON)
     uint32x4_t vecA, vecB;
 
     /* Compute 4 outputs at a time */

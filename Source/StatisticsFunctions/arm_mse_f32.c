@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mse_f32.c
  * Description:  Floating point mean square error
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2022 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/statistics_functions.h"
 
@@ -132,8 +135,11 @@ ARM_DSP_ATTRIBUTE void arm_mse_f32(
         pSrcB += 4;
 
         vecA = vsubq_f32(vecA, vecB);
-
+#if defined(__ARM_FEATURE_FMA)
         vecSum = vfmaq_f32(vecSum, vecA, vecA);
+#else
+        vecSum = vmlaq_f32(vecSum, vecA, vecA);
+#endif
         /*
          * Decrement the blockSize loop counter
          */

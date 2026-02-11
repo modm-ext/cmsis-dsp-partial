@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mfcc_q15.c
  * Description:  MFCC function for the q15 version
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 
 
@@ -62,21 +65,46 @@
                    The number of input samples is the FFT length used
                    when initializing the instance data structure.
 
-                   The temporary buffer has a 2*fft length.
-
                    The source buffer is modified by this function.
 
                    The function may saturate. If the FFT length is too
                    big and the number of MEL filters too small then the fixed
                    point computations may saturate.
 
+  @par Neon implementation
+       There is an additional temporary buffer used for the RFFT.
+
+
+  @code
+      arm_status arm_mfcc_q15(
+  const arm_mfcc_instance_q15 * S,
+  q15_t *pSrc,
+  q15_t *pDst,
+  q31_t *pTmp,
+  q15_t *pTmp_rfft
+  )
+  @endcode
+
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
+
  */
+#if defined(ARM_MATH_NEON)
+ARM_DSP_ATTRIBUTE arm_status arm_mfcc_q15(
+  const arm_mfcc_instance_q15 * S,
+  q15_t *pSrc,
+  q15_t *pDst,
+  q31_t *pTmp,
+  q15_t *pTmp_rfft
+  )
+#else
 ARM_DSP_ATTRIBUTE arm_status arm_mfcc_q15(
   const arm_mfcc_instance_q15 * S,
   q15_t *pSrc,
   q15_t *pDst,
   q31_t *pTmp
   )
+#endif
 {
     q15_t m;
     uint32_t index;
@@ -116,10 +144,14 @@ ARM_DSP_ATTRIBUTE arm_status arm_mfcc_q15(
     /* Compute spectrum magnitude
     */
     fftShift = 31 - __CLZ(S->fftLen);
-#if defined(ARM_MFCC_CFFT_BASED)
+#if defined(ARM_MATH_NEON)
+    /* Default RFFT based implementation */
+    arm_rfft_q15(&(S->rfft),pSrc,pTmp2,pTmp_rfft,0);
+#else
+#if defined(ARM_MFCC_USE_CFFT)
     /* some HW accelerator for CMSIS-DSP used in some boards
        are only providing acceleration for CFFT.
-       With ARM_MFCC_CFFT_BASED enabled, CFFT is used and the MFCC
+       With ARM_MFCC_USE_CFFT enabled, CFFT is used and the MFCC
        will be accelerated on those boards.
 
        The default is to use RFFT
@@ -134,6 +166,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mfcc_q15(
 #else
     /* Default RFFT based implementation */
     arm_rfft_q15(&(S->rfft),pSrc,pTmp2);
+#endif
 #endif
     filterLimit = 1 + (S->fftLen >> 1);
 

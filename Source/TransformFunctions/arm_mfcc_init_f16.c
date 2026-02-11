@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mfcc_init_f16.c
  * Description:  MFCC initialization function for the f16 version
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
+
 
 /**
  * @defgroup MFCCF16 MFCC F16
@@ -110,7 +114,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mfcc_init_f16(
  S->filterCoefs=filterCoefs;
  S->windowCoefs=windowCoefs;
 
- #if defined(ARM_MFCC_CFFT_BASED)
+ #if defined(ARM_MFCC_USE_CFFT)
  status=arm_cfft_init_f16(&(S->cfft),fftLen);
  #else
  status=arm_rfft_fast_init_f16(&(S->rfft),fftLen);
@@ -119,7 +123,7 @@ ARM_DSP_ATTRIBUTE arm_status arm_mfcc_init_f16(
  return(status);
 }
 
-#if defined(ARM_MFCC_CFFT_BASED)
+#if defined(ARM_MFCC_USE_CFFT)
 #define MFCC_INIT_F16(LEN)                    \
 ARM_DSP_ATTRIBUTE arm_status arm_mfcc_init_##LEN##_f16(         \
   arm_mfcc_instance_f16 * S,                  \

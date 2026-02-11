@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_abs_f16.c
  * Description:  Floating-point vector absolute value
@@ -25,6 +25,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/basic_math_functions_f16.h"
 #include <math.h>
@@ -104,7 +106,7 @@ ARM_DSP_ATTRIBUTE void arm_abs_f16(
 {
         uint32_t blkCnt;                               /* Loop counter */
 
-#if defined(ARM_MATH_NEON_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
+#if defined(ARM_MATH_NEON_FLOAT16)
     f16x8_t vec1;
     f16x8_t res;
 

@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_absmax_q31.c
  * Description:  Maximum value of absolute values of a Q31 vector
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/statistics_functions.h"
 
@@ -112,7 +115,7 @@ ARM_DSP_ATTRIBUTE void arm_absmax_q31(
                                                                                                             \
   /* Initialize index value to zero. */                                                                     \
   outIndex = 0U;                                                                                            \
-  /* Load first input value that act as reference value for comparision */                                  \
+  /* Load first input value that act as reference value for comparison */                                  \
   out = *pSrc++;                                                                                            \
   out = (out > 0) ? out : (q31_t)__QSUB(0, out);                                                                           \
   /* Initialize index of extrema value. */                                                                  \
@@ -199,7 +202,7 @@ ARM_DSP_ATTRIBUTE void arm_absmax_q31(
 
   /* Initialise index value to zero. */
   outIndex = 0U;
-  /* Load first input value that act as reference value for comparision */
+  /* Load first input value that act as reference value for comparison */
   out = (*pSrc > 0) ? *pSrc : ((*pSrc == INT32_MIN) ? INT32_MAX : -*pSrc);
   pSrc++;
 

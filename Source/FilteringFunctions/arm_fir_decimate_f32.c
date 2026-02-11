@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_fir_decimate_f32.c
  * Description:  FIR decimation for floating-point sequences
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -393,7 +396,7 @@ ARM_DSP_ATTRIBUTE void arm_fir_decimate_f32(
   float32_t *px0, *px1, *px2, *px3;
   float32_t x1, x2, x3;
 
-  float32x4_t accv,acc0v,acc1v,acc2v,acc3v;
+  float32x4_t accv = { 0 },acc0v,acc1v,acc2v,acc3v;
   float32x4_t x0v, x1v, x2v, x3v;
   float32x4_t c0v;
   float32x2_t temp;

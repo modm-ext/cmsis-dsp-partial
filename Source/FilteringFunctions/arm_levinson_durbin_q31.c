@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_levinson_durbin_q31.c
  * Description:  q31 version of Levinson Durbin algorithm
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -78,7 +81,7 @@ __STATIC_FORCEINLINE q31_t divide(q31_t n, q31_t d)
   (void)status;
 
   // d is used instead of l
-  // So we will need to substract to 2 instead of 1.
+  // So we will need to subtract to 2 instead of 1.
   r = mul32x16(d,inverse);
   r = TWO_Q30 - (r << shift);
   r = mul32x16(r, inverse);
@@ -109,7 +112,7 @@ __STATIC_FORCEINLINE q31_t divide(q31_t n, q31_t d)
  */
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE) && defined(ARM_DSP_BUILT_WITH_GCC)
-#pragma GCC warning "Scalar version of arm_levinson_durbin_q31 built. Helium version has build issues with gcc."
+//#pragma GCC warning "Scalar version of arm_levinson_durbin_q31 built. Helium version has build issues with gcc."
 #endif
 
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE) &&  !defined(ARM_DSP_BUILT_WITH_GCC)

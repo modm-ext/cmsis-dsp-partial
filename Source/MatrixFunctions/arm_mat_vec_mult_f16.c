@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mat_vec_mult_f16.c
  * Description:  Floating-point matrix and vector multiplication
@@ -9,6 +9,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -26,6 +27,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/matrix_functions_f16.h"
 
@@ -161,7 +164,7 @@ ARM_DSP_ATTRIBUTE void arm_mat_vec_mult_f16(
     }
 
     /*
-     * compute 2 rows in parrallel
+     * compute 2 rows in parallel
      */
     if (row >= 2)
     {
@@ -282,6 +285,54 @@ ARM_DSP_ATTRIBUTE void arm_mat_vec_mult_f16(
     }
 }
 #else
+
+#if defined(ARM_MATH_NEON_FLOAT16)
+
+#define TMP_DEFINE_AND_INIT(TMP) \
+    float16x4_t TMP = vdup_n_f16(0.0f16);
+
+#define REDUCE(sum,accum)                                       \
+    tmp = vpadd_f16(vget_low_f16(accum), vget_high_f16(accum)); \
+    tmp = vpadd_f16(tmp,tmp);                                   \
+    tmp = vpadd_f16(tmp,tmp);                                   \
+    sum = vget_lane_f16(tmp, 0);
+
+
+#define MAT_SCALAR_DT float16_t
+#define VEC_SCALAR_DT float16_t
+#define VECTOR_ACC float16x8_t
+#define VECTOR_DT float16x8_t
+#define SCALAR_ACC float16_t
+#define HALF_VECTOR_ACC float16x8_t
+#define NBLANE 8
+#define NBLANE_SHIFT 3
+
+
+#define VECTOR_ACC_INIT(acc) \
+    acc = vdupq_n_f16(0.0f16)
+
+#define SCALAR_ACC_INIT(acc) \
+    acc = 0.0f16
+
+#define VEC_LOAD(v,p) \
+    v = vld1q_f16((p))
+
+
+#define VMAC(ACC,VA,VB) ACC = vfmaq_f16(ACC,(VA),(VB))
+
+
+#define SCALAR_MAC(ACC,MAT,VEC) \
+    ACC = (_Float16)ACC + (_Float16)(MAT) * (_Float16)(VEC)
+
+#define STORE_SCALAR_ACC(DST,ACC) \
+  DST = ACC
+
+#define FUNCNAME arm_mat_vec_mult_f16
+#define MATRIX_TYPE arm_matrix_instance_f16
+
+#include "_arm_mat_vec_mult_neon.c"
+
+#else
 ARM_DSP_ATTRIBUTE void arm_mat_vec_mult_f16(const arm_matrix_instance_f16 *pSrcMat, const float16_t *pVec, float16_t *pDst)
 {
     uint32_t numRows = pSrcMat->numRows;
@@ -311,10 +362,10 @@ ARM_DSP_ATTRIBUTE void arm_mat_vec_mult_f16(const arm_matrix_instance_f16 *pSrcM
         pInVec = pVec;
 
         /* Initialize accumulators */
-        float16_t sum1 = 0.0f16;
-        float16_t sum2 = 0.0f16;
-        float16_t sum3 = 0.0f16;
-        float16_t sum4 = 0.0f16;
+        _Float16 sum1 = 0.0f16;
+        _Float16 sum2 = 0.0f16;
+        _Float16 sum3 = 0.0f16;
+        _Float16 sum4 = 0.0f16;
 
         /* Loop unrolling: process 2 columns per iteration */
         colCnt = numCols;
@@ -360,7 +411,7 @@ ARM_DSP_ATTRIBUTE void arm_mat_vec_mult_f16(const arm_matrix_instance_f16 *pSrcM
     row = numRows & 3u;
     while (row > 0) {
 
-        float16_t sum = 0.0f16;
+        _Float16 sum = 0.0f16;
         pInVec = pVec;
         pInA1 = pSrcA + i;
 
@@ -393,5 +444,6 @@ ARM_DSP_ATTRIBUTE void arm_mat_vec_mult_f16(const arm_matrix_instance_f16 *pSrcM
  * @} end of MatrixMult group
  */
 
+#endif /* if defined(ARM_MATH_NEON)*/
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

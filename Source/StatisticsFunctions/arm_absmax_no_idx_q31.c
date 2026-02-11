@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_absmax_no_idx_q31.c
  * Description:  Maximum value of absolute values of a Q31 vector
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/statistics_functions.h"
 
@@ -92,7 +95,7 @@ ARM_DSP_ATTRIBUTE void arm_absmax_no_idx_q31(
         uint32_t blkCnt;                     /* Loop counter */                                   \
                                                                                                             \
                                                                                            \
-  /* Load first input value that act as reference value for comparision */                                  \
+  /* Load first input value that act as reference value for comparison */                                  \
   out = *pSrc++;                                                                                            \
   out = (out > 0) ? out : (q31_t)__QSUB(0, out);                                                                           \
                                                                                               \
@@ -169,7 +172,7 @@ ARM_DSP_ATTRIBUTE void arm_absmax_no_idx_q31(
 
 
 
-  /* Load first input value that act as reference value for comparision */
+  /* Load first input value that act as reference value for comparison */
   out = (*pSrc > 0) ? *pSrc : ((*pSrc == INT32_MIN) ? INT32_MAX : -*pSrc);
   pSrc++;
 

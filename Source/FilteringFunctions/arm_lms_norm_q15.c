@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_lms_norm_q15.c
  * Description:  Processing function for Q15 normalized LMS filter
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -58,7 +61,7 @@
                    result in 1.15 format.
  @par
   	               In this filter, filter coefficients are updated for each sample and the
-                   updation of filter cofficients are saturted.
+                   updation of filter coefficients are saturted.
  */
 
 ARM_DSP_ATTRIBUTE void arm_lms_norm_q15(

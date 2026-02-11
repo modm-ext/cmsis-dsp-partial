@@ -27,6 +27,7 @@
  * limitations under the License.
  */
 
+#include "arm_compiler_specific.h"
 #include "dsp/distance_functions.h"
 #include <limits.h>
 #include <math.h>
@@ -63,7 +64,7 @@ ARM_DSP_ATTRIBUTE float32_t arm_sokalsneath_distance(const uint32_t *pA, const u
 
     arm_boolean_distance_TT_TF_FT(pA, pB, numberOfBools, &ctt, &ctf, &cft);
 
-    r = 2.0*(ctf + cft);
+    r = 2.0f*(ctf + cft);
 
     return(r / (r + ctt));
 }

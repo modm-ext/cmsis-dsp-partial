@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_min_f32.c
  * Description:  Minimum value of a floating-point vector
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,10 +26,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/statistics_functions.h"
 
-#if (defined(ARM_MATH_NEON) || defined(ARM_MATH_MVEF)) && !defined(ARM_MATH_AUTOVECTORIZE)
+#if defined(ARM_MATH_NEON) || defined(ARM_MATH_MVEF)
 #include <limits.h>
 #endif
 
@@ -143,7 +146,7 @@ ARM_DSP_ATTRIBUTE void arm_min_f32(
 }
 
 #else
-#if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
+#if defined(ARM_MATH_NEON)
 ARM_DSP_ATTRIBUTE void arm_min_f32(
   const float32_t * pSrc,
   uint32_t blockSize,
@@ -273,7 +276,7 @@ ARM_DSP_ATTRIBUTE void arm_min_f32(
   /* Initialise index value to zero. */
   outIndex = 0U;
 
-  /* Load first input value that act as reference value for comparision */
+  /* Load first input value that act as reference value for comparison */
   out = *pSrc++;
 
 #if defined (ARM_MATH_LOOPUNROLL) && !defined(ARM_MATH_AUTOVECTORIZE)

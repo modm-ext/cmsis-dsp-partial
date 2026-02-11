@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mfcc_f32.c
  * Description:  MFCC function for the f32 version
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 
 
@@ -57,20 +60,41 @@
                    The number of input samples if the FFT length used
                    when initializing the instance data structure.
 
-                   The temporary buffer has a 2*fft length size when MFCC
-                   is implemented with CFFT.
-                   It has length FFT Length + 2 when implemented with RFFT
-                   (default implementation).
-
                    The source buffer is modified by this function.
 
+ @par   Neon implementation
+                 The Neon implementation has a different API.
+                 There is an additional temporary buffer pTmp2.
+                 The source buffer is  modified.
+ @code
+        void arm_mfcc_f32(
+             const arm_mfcc_instance_f32 * S,
+                   float32_t *pSrc,
+                   float32_t *pDst,
+                   float32_t *pTmp,
+                   float32_t *pTmp2
+          );
+  @endcode
+
+  @par Size of buffers according to the target architecture and datatype:
+       They are described on the page \ref transformbuffers "transform buffers".
  */
+#if defined(ARM_MATH_NEON)
+ARM_DSP_ATTRIBUTE void arm_mfcc_f32(
+  const arm_mfcc_instance_f32 * S,
+  float32_t *pSrc,
+  float32_t *pDst,
+  float32_t *pTmp,
+  float32_t *pTmp2
+  )
+#else
 ARM_DSP_ATTRIBUTE void arm_mfcc_f32(
   const arm_mfcc_instance_f32 * S,
   float32_t *pSrc,
   float32_t *pDst,
   float32_t *pTmp
   )
+#endif
 {
   float32_t maxValue;
   uint32_t  index;
@@ -92,10 +116,14 @@ ARM_DSP_ATTRIBUTE void arm_mfcc_f32(
 
   /* Compute spectrum magnitude
   */
-#if defined(ARM_MFCC_CFFT_BASED)
+#if defined(ARM_MATH_NEON)
+  arm_rfft_fast_f32(&(S->rfft),pSrc,pTmp,pTmp2,0);
+  pTmp[1]=0.0f;
+#else
+#if defined(ARM_MFCC_USE_CFFT)
   /* some HW accelerator for CMSIS-DSP used in some boards
      are only providing acceleration for CFFT.
-     With ARM_MFCC_CFFT_BASED enabled, CFFT is used and the MFCC
+     With ARM_MFCC_USE_CFFT enabled, CFFT is used and the MFCC
      will be accelerated on those boards.
 
      The default is to use RFFT
@@ -110,11 +138,9 @@ ARM_DSP_ATTRIBUTE void arm_mfcc_f32(
 #else
   /* Default RFFT based implementation */
   arm_rfft_fast_f32(&(S->rfft),pSrc,pTmp,0);
-  /* Unpack real values */
-  pTmp[S->fftLen]=pTmp[1];
-  pTmp[S->fftLen+1]=0.0f;
   pTmp[1]=0.0f;
-#endif
+#endif /* ARM_MFCC_USE_CFFT */
+#endif /* ARM_MATH_NEON */
   arm_cmplx_mag_f32(pTmp,pSrc,S->fftLen);
   if (maxValue != 0.0f)
   {

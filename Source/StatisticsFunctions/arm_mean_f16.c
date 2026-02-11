@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_mean_f16.c
  * Description:  Mean value of a floating-point vector
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/statistics_functions_f16.h"
 
@@ -96,7 +99,7 @@ ARM_DSP_ATTRIBUTE void arm_mean_f16(
         float16_t * pResult)
 {
         uint32_t blkCnt;                               /* Loop counter */
-        float16_t sum = 0.0f;                          /* Temporary result storage */
+        _Float16 sum = 0.0f;                          /* Temporary result storage */
 
 #if defined (ARM_MATH_LOOPUNROLL) && !defined(ARM_MATH_AUTOVECTORIZE)
 

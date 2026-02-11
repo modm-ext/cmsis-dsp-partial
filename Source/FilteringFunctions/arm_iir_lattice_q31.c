@@ -1,4 +1,4 @@
-/* ----------------------------------------------------------------------
+﻿/* ----------------------------------------------------------------------
  * Project:      CMSIS DSP Library
  * Title:        arm_iir_lattice_q31.c
  * Description:  Q31 IIR Lattice filter processing function
@@ -8,6 +8,7 @@
  *
  * Target Processor: Cortex-M and Cortex-A cores
  * -------------------------------------------------------------------- */
+
 /*
  * Copyright (C) 2010-2021 ARM Limited or its affiliates. All rights reserved.
  *
@@ -25,6 +26,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "arm_compiler_specific.h"
+
 
 #include "dsp/filtering_functions.h"
 
@@ -61,7 +64,7 @@ ARM_DSP_ATTRIBUTE void arm_iir_lattice_q31(
         q31_t *pState = S->pState;                       /* State pointer */
         q31_t *pStateCur;                                /* State current pointer */
         q31_t fcurr, fnext = 0, gcurr = 0, gnext;        /* Temporary variables for lattice stages */
-        q63_t acc;                                       /* Accumlator */
+        q63_t acc;                                       /* Accumulator */
         q31_t *px1, *px2, *pk, *pv;                      /* Temporary pointers for state and coef */
         uint32_t numStages = S->numStages;               /* Number of stages */
         uint32_t blkCnt, tapCnt;                         /* Temporary variables for counts */
@@ -132,7 +135,7 @@ ARM_DSP_ATTRIBUTE void arm_iir_lattice_q31(
       /* write gN-1(n) into state for next sample processing */
       *px2++ = gnext;
 
-      /* Process sample for 3nd, 7th ...taps */
+      /* Process sample for 3rd, 7th ...taps */
       /* Read gN-3(n-1) from state buffer */
       gcurr = *px1++;
       /* Process sample for 3rd, 7th .. taps */
@@ -223,7 +226,7 @@ ARM_DSP_ATTRIBUTE void arm_iir_lattice_q31(
   }
 
   /* Processing is complete. Now copy last S->numStages samples to start of the buffer
-     for the preperation of next frame process */
+     for the preparation of next frame process */
 
   /* Points to the start of the state buffer */
   pStateCur = &S->pState[0];
@@ -329,7 +332,7 @@ ARM_DSP_ATTRIBUTE void arm_iir_lattice_q31(
   }
 
   /* Processing is complete. Now copy last S->numStages samples to start of the buffer
-     for the preperation of next frame process */
+     for the preparation of next frame process */
 
   /* Points to the start of the state buffer */
   pStateCur = &S->pState[0];
